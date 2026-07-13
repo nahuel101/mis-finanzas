@@ -42,7 +42,7 @@ export default async function ResumenPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="font-display text-2xl italic text-paper">Resumen</p>
+      <p className="font-display text-2xl font-semibold text-paper">Resumen</p>
 
       {/* Balance principal */}
       <section className="rounded-2xl border border-border bg-surface p-5">

@@ -5,61 +5,34 @@ import {
   crearTransaccion,
   type EstadoFormTransaccion,
 } from "@/lib/actions/transacciones";
-import {
-  CATEGORIAS_GASTO,
-  CATEGORIAS_INGRESO,
-  type TipoTransaccion,
-} from "@/lib/types";
+import type { TipoTransaccion } from "@/lib/types";
 
 const estadoInicial: EstadoFormTransaccion = { error: null };
 
 export default function TransaccionForm({
   onGuardado,
   tipoFijo,
+  categorias,
 }: {
   onGuardado: () => void;
-  tipoFijo?: TipoTransaccion;
+  tipoFijo: TipoTransaccion;
+  categorias: string[];
 }) {
   const [estado, formAction, pending] = useActionState(
     crearTransaccion,
     estadoInicial
   );
-  const [tipo, setTipo] = useState<TipoTransaccion>(tipoFijo ?? "gasto");
   const [moneda, setMoneda] = useState<"ARS" | "USD">("ARS");
 
   useEffect(() => {
     if (estado.ok) onGuardado();
   }, [estado.ok, onGuardado]);
 
-  const categorias = tipo === "gasto" ? CATEGORIAS_GASTO : CATEGORIAS_INGRESO;
   const hoy = new Date().toISOString().slice(0, 10);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
-      {/* Tipo: ingreso / gasto */}
-      {tipoFijo ? (
-        <input type="hidden" name="tipo" value={tipoFijo} />
-      ) : (
-        <div className="grid grid-cols-2 gap-2">
-          {(["gasto", "ingreso"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTipo(t)}
-              className={`rounded-lg border py-2 text-sm capitalize transition ${
-                tipo === t
-                  ? t === "gasto"
-                    ? "border-copper bg-copper/10 text-copper"
-                    : "border-sage bg-sage/10 text-sage"
-                  : "border-border text-mist"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-          <input type="hidden" name="tipo" value={tipo} />
-        </div>
-      )}
+      <input type="hidden" name="tipo" value={tipoFijo} />
 
       {/* Monto + moneda */}
       <div className="flex gap-2">
@@ -89,18 +62,23 @@ export default function TransaccionForm({
       </div>
 
       {/* Categoría */}
-      <select
-        name="categoria"
-        defaultValue={categorias[0]}
-        key={tipo}
-        className="rounded-lg border border-border bg-ink px-3 py-2.5 text-paper outline-none focus:border-gold"
-      >
-        {categorias.map((c) => (
-          <option key={c} value={c}>
-            {c}
-          </option>
-        ))}
-      </select>
+      {categorias.length > 0 ? (
+        <select
+          name="categoria"
+          defaultValue={categorias[0]}
+          className="rounded-lg border border-border bg-ink px-3 py-2.5 text-paper outline-none focus:border-gold"
+        >
+          {categorias.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <p className="text-sm text-mist-dim">
+          No tenés categorías todavía. Agregá una desde Cuenta.
+        </p>
+      )}
 
       {/* Descripción */}
       <input

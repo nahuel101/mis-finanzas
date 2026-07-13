@@ -1,13 +1,18 @@
 import { auth } from "@/auth";
+import { obtenerCategorias } from "@/lib/actions/categorias";
 import LogoutButton from "@/components/LogoutButton";
 import AgregarCuentaForm from "@/components/AgregarCuentaForm";
+import CategoriasManager from "@/components/CategoriasManager";
 
 export default async function CuentaPage() {
-  const session = await auth();
+  const [session, categorias] = await Promise.all([
+    auth(),
+    obtenerCategorias(),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="font-display text-2xl italic text-paper">Cuenta</p>
+      <p className="font-display text-2xl font-semibold text-paper">Cuenta</p>
 
       <section className="rounded-xl border border-border bg-surface p-4">
         <p className="text-xs uppercase tracking-wide text-mist">
@@ -20,6 +25,16 @@ export default async function CuentaPage() {
           <LogoutButton />
         </div>
       </section>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-xs uppercase tracking-wide text-mist">
+          Categorías
+        </p>
+        <CategoriasManager
+          categoriasGasto={categorias.gasto}
+          categoriasIngreso={categorias.ingreso}
+        />
+      </div>
 
       <section className="rounded-xl border border-border bg-surface p-4">
         <p className="mb-1 text-xs uppercase tracking-wide text-mist">

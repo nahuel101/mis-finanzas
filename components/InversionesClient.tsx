@@ -18,7 +18,7 @@ export default function InversionesClient({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <p className="font-display text-2xl italic text-paper">Inversiones</p>
+        <p className="font-display text-2xl font-semibold text-paper">Inversiones</p>
         <button
           onClick={() => setModalAbierto(true)}
           className="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-ink"

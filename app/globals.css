@@ -1,30 +1,31 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------
-   Sistema de diseño — "Libro Mayor"
-   Paleta inspirada en billetes y libros contables: fondo tinta
-   profunda, superficies elevadas en verde-carbón, acentos de oro
-   (inversiones), salvia (positivo) y cobre (negativo).
-   Los montos siempre en monoespaciada con tabular-nums.
+   Sistema de diseño — estilo Nexo
+   Fondo azul-negro profundo, superficies elevadas en azul marino,
+   acento eléctrico celeste/violeta como color de marca, verde
+   (positivo) y rojo (negativo) para montos. Tipografía geométrica
+   en negrita, montos siempre en monoespaciada con tabular-nums.
 ----------------------------------------------------------------*/
 
 :root {
-  --ink: #0e211d;
-  --surface: #16302a;
-  --surface-2: #1d3d35;
-  --border: #2a4a41;
-  --paper: #f4f2ea;
-  --mist: #9fb3ac;
-  --mist-dim: #6f8681;
+  --ink: #05070f;
+  --surface: #0e1220;
+  --surface-2: #141a2e;
+  --border: #232a44;
+  --paper: #f5f7fb;
+  --mist: #8b93ad;
+  --mist-dim: #565f7d;
 
-  --gold: #c9a227;
-  --gold-dim: #8a7220;
-  --sage: #7fb89a;
-  --sage-dim: #567d69;
-  --copper: #c1693f;
-  --copper-dim: #8a4b2d;
+  --gold: #4f7dfb;
+  --gold-dim: #2f4fb0;
+  --gold-2: #22d3ee;
+  --sage: #34d399;
+  --sage-dim: #1f8f68;
+  --copper: #fb5f6b;
+  --copper-dim: #b5323d;
 
-  --font-display: var(--font-fraunces);
+  --font-display: var(--font-space-grotesk);
   --font-body: var(--font-inter);
   --font-mono: var(--font-plex-mono);
 }
@@ -39,6 +40,7 @@
   --color-mist-dim: var(--mist-dim);
   --color-gold: var(--gold);
   --color-gold-dim: var(--gold-dim);
+  --color-gold-2: var(--gold-2);
   --color-sage: var(--sage);
   --color-sage-dim: var(--sage-dim);
   --color-copper: var(--copper);
@@ -66,12 +68,24 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }
 
 .font-mono-num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
 }
 
 ::selection {

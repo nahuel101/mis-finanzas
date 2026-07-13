@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { contarUsuarios } from "@/lib/actions/usuarios";
 import SetupForm from "@/components/SetupForm";
+import LogoMark from "@/components/LogoMark";
 
 // Esta página depende de si ya existe algún usuario en la base, algo
 // que puede cambiar en cualquier momento — nunca debe quedar cacheada
@@ -20,7 +21,8 @@ export default async function SetupPage() {
     <main className="flex min-h-dvh flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
-          <p className="font-display text-3xl italic text-paper">
+          <LogoMark className="mx-auto mb-4 h-14 w-14 rounded-2xl" />
+          <p className="font-display text-3xl font-semibold text-paper">
             Mis Finanzas
           </p>
           <p className="mt-2 text-sm text-mist">

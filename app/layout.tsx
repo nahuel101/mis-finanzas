@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
 });
 
 const inter = Inter({
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e211d",
+  themeColor: "#05070f",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -52,7 +51,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable} antialiased`}
       >
         {children}
       </body>

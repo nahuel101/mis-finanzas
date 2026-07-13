@@ -49,6 +49,20 @@ create table if not exists inversiones (
 create index if not exists inversiones_user_idx
   on inversiones (user_id);
 
+-- ---------- Categorías (personalizables por usuario) -------------
+create table if not exists categorias (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users (id) on delete cascade,
+  tipo text not null check (tipo in ('ingreso', 'gasto')),
+  nombre text not null,
+  orden int not null default 0,
+  created_at timestamptz not null default now(),
+  unique (user_id, tipo, nombre)
+);
+
+create index if not exists categorias_user_tipo_idx
+  on categorias (user_id, tipo, orden);
+
 -- Nota de seguridad: esta base no usa Row Level Security (eso es
 -- una característica propia de Supabase). En su lugar, TODA consulta
 -- de la app pasa por Server Actions que agregan "where user_id = ..."

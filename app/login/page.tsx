@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { autenticar, type EstadoLogin } from "@/lib/actions/auth-form";
+import LogoMark from "@/components/LogoMark";
 
 const estadoInicial: EstadoLogin = { error: null };
 
@@ -16,7 +17,8 @@ export default function LoginPage() {
     <main className="flex min-h-dvh flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="mb-10 text-center">
-          <p className="font-display text-3xl italic text-paper">
+          <LogoMark className="mx-auto mb-4 h-14 w-14 rounded-2xl" />
+          <p className="font-display text-3xl font-semibold text-paper">
             Mis Finanzas
           </p>
           <p className="mt-2 text-sm text-mist">

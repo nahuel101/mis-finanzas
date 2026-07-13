@@ -14,6 +14,14 @@ export interface Transaccion {
   created_at: string;
 }
 
+export interface Categoria {
+  id: string;
+  user_id: string;
+  tipo: TipoTransaccion;
+  nombre: string;
+  orden: number;
+}
+
 export interface Inversion {
   id: string;
   user_id: string;
@@ -28,7 +36,10 @@ export interface Inversion {
   created_at: string;
 }
 
-export const CATEGORIAS_GASTO = [
+// Categorías con las que se "siembra" la cuenta de cada usuario la
+// primera vez (ver lib/actions/categorias.ts). A partir de ahí, cada
+// usuario las administra libremente desde Cuenta.
+export const DEFAULT_CATEGORIAS_GASTO = [
   "Comida",
   "Transporte",
   "Vivienda",
@@ -40,7 +51,7 @@ export const CATEGORIAS_GASTO = [
   "Otros",
 ] as const;
 
-export const CATEGORIAS_INGRESO = [
+export const DEFAULT_CATEGORIAS_INGRESO = [
   "Sueldo",
   "Freelance",
   "Ventas",

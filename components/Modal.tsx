@@ -32,7 +32,7 @@ export default function Modal({
         aria-label={title}
       >
         <div className="mb-4 flex items-center justify-between">
-          <p className="font-display text-lg italic text-paper">{title}</p>
+          <p className="font-display text-lg font-semibold text-paper">{title}</p>
           <button
             onClick={onClose}
             aria-label="Cerrar"

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import type { Transaccion } from "@/lib/types";
-import { CATEGORIAS_GASTO } from "@/lib/types";
 import { formatMonto } from "@/lib/format";
 import Modal from "@/components/Modal";
 import GastoRapidoForm from "@/components/GastoRapidoForm";
@@ -16,8 +15,10 @@ const MES_ACTUAL = new Date().toLocaleDateString("es-AR", {
 
 export default function GastosClient({
   transacciones,
+  categorias,
 }: {
   transacciones: Transaccion[];
+  categorias: string[];
 }) {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<
     string | null
@@ -59,7 +60,7 @@ export default function GastosClient({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <p className="font-display text-2xl italic text-paper">Gastos</p>
+        <p className="font-display text-2xl font-semibold text-paper">Gastos</p>
         <button
           onClick={() => setModalCompletoAbierto(true)}
           className="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-ink"
@@ -93,7 +94,12 @@ export default function GastosClient({
 
       {/* Categorías como botones */}
       <section className="grid grid-cols-3 gap-2.5">
-        {CATEGORIAS_GASTO.map((categoria) => (
+        {categorias.length === 0 && (
+          <p className="col-span-3 text-sm text-mist-dim">
+            No tenés categorías todavía. Agregá una desde Cuenta.
+          </p>
+        )}
+        {categorias.map((categoria) => (
           <button
             key={categoria}
             onClick={() => setCategoriaSeleccionada(categoria)}
@@ -148,6 +154,7 @@ export default function GastosClient({
       >
         <TransaccionForm
           tipoFijo="gasto"
+          categorias={categorias}
           onGuardado={() => setModalCompletoAbierto(false)}
         />
       </Modal>

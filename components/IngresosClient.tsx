@@ -14,8 +14,10 @@ const MES_ACTUAL = new Date().toLocaleDateString("es-AR", {
 
 export default function IngresosClient({
   transacciones,
+  categorias,
 }: {
   transacciones: Transaccion[];
+  categorias: string[];
 }) {
   const [modalAbierto, setModalAbierto] = useState(false);
 
@@ -44,7 +46,7 @@ export default function IngresosClient({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <p className="font-display text-2xl italic text-paper">Ingresos</p>
+        <p className="font-display text-2xl font-semibold text-paper">Ingresos</p>
         <button
           onClick={() => setModalAbierto(true)}
           className="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-ink"
@@ -92,6 +94,7 @@ export default function IngresosClient({
       >
         <TransaccionForm
           tipoFijo="ingreso"
+          categorias={categorias}
           onGuardado={() => setModalAbierto(false)}
         />
       </Modal>
