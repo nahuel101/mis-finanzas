@@ -31,14 +31,21 @@ export default function TransaccionList({
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span
-              className={`font-mono-num shrink-0 text-sm ${
-                t.tipo === "ingreso" ? "text-sage" : "text-copper"
-              }`}
-            >
-              {t.tipo === "ingreso" ? "+" : "−"}
-              {formatMonto(t.monto, t.moneda)}
-            </span>
+            <div className="flex shrink-0 flex-col items-end gap-0.5">
+              <span
+                className={`font-mono-num text-sm ${
+                  t.tipo === "ingreso" ? "text-sage" : "text-copper"
+                }`}
+              >
+                {t.tipo === "ingreso" ? "+" : "−"}
+                {formatMonto(t.monto, t.moneda)}
+              </span>
+              {t.moneda === "USD" && (
+                <span className="rounded-full border border-border px-1.5 py-0.5 text-[9px] font-medium leading-none text-mist-dim">
+                  USD
+                </span>
+              )}
+            </div>
             <form action={eliminarTransaccion.bind(null, t.id)}>
               <button
                 type="submit"

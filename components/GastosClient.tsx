@@ -16,9 +16,11 @@ const MES_ACTUAL = new Date().toLocaleDateString("es-AR", {
 export default function GastosClient({
   transacciones,
   categorias,
+  dolarMEP,
 }: {
   transacciones: Transaccion[];
   categorias: string[];
+  dolarMEP: number | null;
 }) {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<
     string | null
@@ -46,6 +48,8 @@ export default function GastosClient({
   const totalMesUSD = gastosDelMes
     .filter((t) => t.moneda === "USD")
     .reduce((acc, t) => acc + Number(t.monto), 0);
+  const totalCombinadoARS =
+    totalMesARS + (dolarMEP ? totalMesUSD * dolarMEP : 0);
 
   const porCategoria = useMemo(() => {
     const map = new Map<string, number>();
@@ -83,11 +87,24 @@ export default function GastosClient({
           Gastos de {MES_ACTUAL}
         </p>
         <p className="font-mono-num mt-2 text-4xl text-copper">
-          {formatMonto(totalMesARS, "ARS")}
+          {formatMonto(totalCombinadoARS, "ARS")}
         </p>
         {totalMesUSD > 0 && (
-          <p className="font-mono-num mt-1 text-sm text-mist">
-            {formatMonto(totalMesUSD, "USD")}
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <span className="font-mono-num text-sm text-mist">
+              {formatMonto(totalMesARS, "ARS")}{" "}
+              <span className="text-[10px] text-mist-dim">ARS</span>
+            </span>
+            <span className="font-mono-num text-sm text-mist">
+              {formatMonto(totalMesUSD, "USD")}{" "}
+              <span className="text-[10px] text-mist-dim">USD</span>
+            </span>
+          </div>
+        )}
+        {totalMesUSD > 0 && !dolarMEP && (
+          <p className="mt-1 text-xs text-copper">
+            No se pudo cotizar el dólar MEP — el total no incluye los gastos
+            en USD.
           </p>
         )}
       </section>

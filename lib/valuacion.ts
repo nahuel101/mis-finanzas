@@ -51,6 +51,22 @@ export async function obtenerDolarCCL(): Promise<number | null> {
   }
 }
 
+/**
+ * Dólar MEP actual, promediado entre compra y venta (punto medio),
+ * para convertir montos en USD de gastos/ingresos a su equivalente en
+ * pesos sin sesgar hacia la punta compradora o vendedora. Null si la
+ * consulta falla.
+ */
+export async function obtenerDolarMEP(): Promise<number | null> {
+  try {
+    const dolares = await getDolares();
+    const mep = dolares.find((d) => d.casa === "bolsa");
+    return mep ? (mep.compra + mep.venta) / 2 : null;
+  } catch {
+    return null;
+  }
+}
+
 export interface InversionValuada extends Inversion {
   valorActualARS: number | null;
   gananciaARS: number | null;
