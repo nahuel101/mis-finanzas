@@ -1,0 +1,12 @@
+{
+  "name": "Mis Finanzas",
+  "short_name": "Finanzas",
+  "description": "Gastos, ingresos e inversiones en un solo lugar.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e211d",
+  "theme_color": "#0e211d",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

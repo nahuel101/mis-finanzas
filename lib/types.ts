@@ -1,0 +1,49 @@
+export type Moneda = "ARS" | "USD";
+export type TipoTransaccion = "ingreso" | "gasto";
+export type TipoInversion = "cedear" | "accion" | "cripto" | "bono" | "otro";
+
+export interface Transaccion {
+  id: string;
+  user_id: string;
+  tipo: TipoTransaccion;
+  monto: number;
+  moneda: Moneda;
+  categoria: string;
+  descripcion: string | null;
+  fecha: string; // ISO date (YYYY-MM-DD)
+  created_at: string;
+}
+
+export interface Inversion {
+  id: string;
+  user_id: string;
+  tipo: TipoInversion;
+  ticker: string;
+  nombre: string | null;
+  cantidad: number;
+  precio_compra: number;
+  moneda_compra: Moneda;
+  coingecko_id: string | null;
+  fecha_compra: string;
+  created_at: string;
+}
+
+export const CATEGORIAS_GASTO = [
+  "Comida",
+  "Transporte",
+  "Vivienda",
+  "Servicios",
+  "Salud",
+  "Ocio",
+  "Ropa",
+  "Educación",
+  "Otros",
+] as const;
+
+export const CATEGORIAS_INGRESO = [
+  "Sueldo",
+  "Freelance",
+  "Ventas",
+  "Regalo",
+  "Otros",
+] as const;

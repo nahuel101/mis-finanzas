@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Sistema de diseño — "Libro Mayor"
+   Paleta inspirada en billetes y libros contables: fondo tinta
+   profunda, superficies elevadas en verde-carbón, acentos de oro
+   (inversiones), salvia (positivo) y cobre (negativo).
+   Los montos siempre en monoespaciada con tabular-nums.
+----------------------------------------------------------------*/
+
+:root {
+  --ink: #0e211d;
+  --surface: #16302a;
+  --surface-2: #1d3d35;
+  --border: #2a4a41;
+  --paper: #f4f2ea;
+  --mist: #9fb3ac;
+  --mist-dim: #6f8681;
+
+  --gold: #c9a227;
+  --gold-dim: #8a7220;
+  --sage: #7fb89a;
+  --sage-dim: #567d69;
+  --copper: #c1693f;
+  --copper-dim: #8a4b2d;
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-paper: var(--paper);
+  --color-mist: var(--mist);
+  --color-mist-dim: var(--mist-dim);
+  --color-gold: var(--gold);
+  --color-gold-dim: var(--gold-dim);
+  --color-sage: var(--sage);
+  --color-sage-dim: var(--sage-dim);
+  --color-copper: var(--copper);
+  --color-copper-dim: var(--copper-dim);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background: var(--ink);
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  min-height: 100dvh;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--gold-dim);
+  color: var(--paper);
+}
+
+/* Foco visible accesible, consistente con la paleta */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border-radius: 8px;
+}
