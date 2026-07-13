@@ -22,6 +22,13 @@ export interface Categoria {
   orden: number;
 }
 
+export interface Nota {
+  id: string;
+  user_id: string;
+  contenido: string;
+  created_at: string;
+}
+
 export interface Inversion {
   id: string;
   user_id: string;

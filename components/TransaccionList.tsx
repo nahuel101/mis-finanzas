@@ -43,7 +43,7 @@ export default function TransaccionList({
               <button
                 type="submit"
                 aria-label="Borrar movimiento"
-                className="text-mist-dim hover:text-copper"
+                className="p-1.5 text-mist-dim hover:text-copper"
               >
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                   <path

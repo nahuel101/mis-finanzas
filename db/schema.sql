@@ -63,6 +63,17 @@ create table if not exists categorias (
 create index if not exists categorias_user_tipo_idx
   on categorias (user_id, tipo, orden);
 
+-- ---------- Notas (apuntes libres por usuario) -------------------
+create table if not exists notas (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users (id) on delete cascade,
+  contenido text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists notas_user_idx
+  on notas (user_id, created_at desc);
+
 -- Nota de seguridad: esta base no usa Row Level Security (eso es
 -- una característica propia de Supabase). En su lugar, TODA consulta
 -- de la app pasa por Server Actions que agregan "where user_id = ..."

@@ -8,6 +8,7 @@ const TABS = [
   { href: "/ingresos", label: "Ingresos", icon: IngresoIcon },
   { href: "/resumen", label: "Resumen", icon: LedgerIcon },
   { href: "/inversiones", label: "Inversiones", icon: CoinIcon },
+  { href: "/notas", label: "Notas", icon: NotaIcon },
   { href: "/cuenta", label: "Cuenta", icon: PersonIcon },
 ];
 
@@ -26,12 +27,14 @@ export default function BottomNav() {
             <li key={href} className="flex-1">
               <Link
                 href={href}
-                className="flex flex-col items-center gap-1 py-2.5 text-[11px]"
+                className="flex flex-col items-center gap-1 py-2.5 text-[10px]"
               >
                 <Icon
                   className={`h-5 w-5 ${active ? "text-gold" : "text-mist-dim"}`}
                 />
-                <span className={active ? "text-gold" : "text-mist-dim"}>
+                <span
+                  className={`whitespace-nowrap ${active ? "text-gold" : "text-mist-dim"}`}
+                >
                   {label}
                 </span>
               </Link>
@@ -96,6 +99,20 @@ function CoinIcon({ className }: { className?: string }) {
         strokeWidth="1.4"
         strokeLinecap="round"
       />
+    </svg>
+  );
+}
+
+function NotaIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M6 4h9l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path d="M8.5 10h7M8.5 13.5h7M8.5 17h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   );
 }

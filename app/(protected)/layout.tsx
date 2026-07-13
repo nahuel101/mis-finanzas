@@ -8,7 +8,10 @@ export default function ProtectedLayout({
 }) {
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
-      <header className="flex items-center gap-2 px-5 pb-2 pt-6">
+      <header
+        className="flex items-center gap-2 px-5 pb-2"
+        style={{ paddingTop: "max(1.5rem, env(safe-area-inset-top))" }}
+      >
         <LogoMark className="h-7 w-7 rounded-lg" />
         <p className="font-display text-xl font-semibold text-paper">
           Mis Finanzas
