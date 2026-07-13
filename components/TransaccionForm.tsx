@@ -15,14 +15,16 @@ const estadoInicial: EstadoFormTransaccion = { error: null };
 
 export default function TransaccionForm({
   onGuardado,
+  tipoFijo,
 }: {
   onGuardado: () => void;
+  tipoFijo?: TipoTransaccion;
 }) {
   const [estado, formAction, pending] = useActionState(
     crearTransaccion,
     estadoInicial
   );
-  const [tipo, setTipo] = useState<TipoTransaccion>("gasto");
+  const [tipo, setTipo] = useState<TipoTransaccion>(tipoFijo ?? "gasto");
   const [moneda, setMoneda] = useState<"ARS" | "USD">("ARS");
 
   useEffect(() => {
@@ -35,25 +37,29 @@ export default function TransaccionForm({
   return (
     <form action={formAction} className="flex flex-col gap-4">
       {/* Tipo: ingreso / gasto */}
-      <div className="grid grid-cols-2 gap-2">
-        {(["gasto", "ingreso"] as const).map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTipo(t)}
-            className={`rounded-lg border py-2 text-sm capitalize transition ${
-              tipo === t
-                ? t === "gasto"
-                  ? "border-copper bg-copper/10 text-copper"
-                  : "border-sage bg-sage/10 text-sage"
-                : "border-border text-mist"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-        <input type="hidden" name="tipo" value={tipo} />
-      </div>
+      {tipoFijo ? (
+        <input type="hidden" name="tipo" value={tipoFijo} />
+      ) : (
+        <div className="grid grid-cols-2 gap-2">
+          {(["gasto", "ingreso"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTipo(t)}
+              className={`rounded-lg border py-2 text-sm capitalize transition ${
+                tipo === t
+                  ? t === "gasto"
+                    ? "border-copper bg-copper/10 text-copper"
+                    : "border-sage bg-sage/10 text-sage"
+                  : "border-border text-mist"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+          <input type="hidden" name="tipo" value={tipo} />
+        </div>
+      )}
 
       {/* Monto + moneda */}
       <div className="flex gap-2">

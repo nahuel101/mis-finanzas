@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { href: "/", label: "Resumen", icon: LedgerIcon },
-  { href: "/movimientos", label: "Movimientos", icon: ArrowsIcon },
+  { href: "/", label: "Gastos", icon: GastoIcon },
+  { href: "/ingresos", label: "Ingresos", icon: IngresoIcon },
+  { href: "/resumen", label: "Resumen", icon: LedgerIcon },
   { href: "/inversiones", label: "Inversiones", icon: CoinIcon },
   { href: "/cuenta", label: "Cuenta", icon: PersonIcon },
 ];
@@ -56,11 +57,26 @@ function LedgerIcon({ className }: { className?: string }) {
   );
 }
 
-function ArrowsIcon({ className }: { className?: string }) {
+function GastoIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6" />
       <path
-        d="M5 8h11l-3-3M19 16H8l3 3"
+        d="M8.5 12h7"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function IngresoIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M8.5 15.5 15.5 8.5M9.5 8.5h6v6"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"

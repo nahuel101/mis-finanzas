@@ -59,7 +59,8 @@ export async function crearTransaccion(
   `;
 
   revalidatePath("/");
-  revalidatePath("/movimientos");
+  revalidatePath("/ingresos");
+  revalidatePath("/resumen");
   return { error: null, ok: true };
 }
 
@@ -73,5 +74,6 @@ export async function eliminarTransaccion(id: string) {
   `;
 
   revalidatePath("/");
-  revalidatePath("/movimientos");
+  revalidatePath("/ingresos");
+  revalidatePath("/resumen");
 }
