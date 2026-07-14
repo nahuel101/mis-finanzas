@@ -18,27 +18,32 @@ const COLORES = [
 
 export default function GastosPorCategoriaChart({
   transacciones,
+  dolarMEP,
 }: {
   transacciones: Transaccion[];
+  dolarMEP: number | null;
 }) {
   const data = useMemo(() => {
     const porCategoria = new Map<string, number>();
     transacciones
-      .filter((t) => t.tipo === "gasto" && t.moneda === "ARS")
+      .filter((t) => t.tipo === "gasto")
+      .filter((t) => t.moneda === "ARS" || dolarMEP !== null)
       .forEach((t) => {
+        const montoARS =
+          t.moneda === "ARS" ? Number(t.monto) : Number(t.monto) * dolarMEP!;
         porCategoria.set(
           t.categoria,
-          (porCategoria.get(t.categoria) ?? 0) + Number(t.monto)
+          (porCategoria.get(t.categoria) ?? 0) + montoARS
         );
       });
     return Array.from(porCategoria.entries())
       .map(([categoria, monto]) => ({ categoria, monto }))
       .sort((a, b) => b.monto - a.monto);
-  }, [transacciones]);
+  }, [transacciones, dolarMEP]);
 
   if (data.length === 0) {
     return (
-      <p className="text-sm text-mist-dim">Todavía no hay gastos en pesos.</p>
+      <p className="text-sm text-mist-dim">Todavía no hay gastos cargados.</p>
     );
   }
 

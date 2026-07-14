@@ -1,6 +1,10 @@
 import { obtenerTransacciones } from "@/lib/actions/transacciones";
 import { obtenerInversiones } from "@/lib/actions/inversiones";
-import { obtenerDolarCCL, valuarInversiones } from "@/lib/valuacion";
+import {
+  obtenerDolarCCL,
+  obtenerDolarMEP,
+  valuarInversiones,
+} from "@/lib/valuacion";
 import { formatMonto } from "@/lib/format";
 import GastosPorCategoriaChart from "@/components/GastosPorCategoriaChart";
 
@@ -9,7 +13,10 @@ export default async function ResumenPage() {
     obtenerTransacciones(),
     obtenerInversiones(),
   ]);
-  const dolarCCL = await obtenerDolarCCL();
+  const [dolarCCL, dolarMEP] = await Promise.all([
+    obtenerDolarCCL(),
+    obtenerDolarMEP(),
+  ]);
   const inversionesValuadas = await valuarInversiones(inversiones, dolarCCL);
 
   const hoy = new Date();
@@ -28,10 +35,21 @@ export default async function ResumenPage() {
       .filter((t) => t.tipo === tipo && t.moneda === moneda)
       .reduce((acc, t) => acc + Number(t.monto), 0);
 
+  const aCombinadoARS = (montoARS: number, montoUSD: number) =>
+    montoARS + (dolarMEP ? montoUSD * dolarMEP : 0);
+
   const balanceARS = totalPor("ingreso", "ARS") - totalPor("gasto", "ARS");
   const balanceUSD = totalPor("ingreso", "USD") - totalPor("gasto", "USD");
+  const balanceCombinadoARS = aCombinadoARS(balanceARS, balanceUSD);
+  const hayUSD =
+    totalPor("ingreso", "USD") !== 0 || totalPor("gasto", "USD") !== 0;
+
   const ingresosMesARS = mesPor("ingreso", "ARS");
+  const ingresosMesUSD = mesPor("ingreso", "USD");
   const gastosMesARS = mesPor("gasto", "ARS");
+  const gastosMesUSD = mesPor("gasto", "USD");
+  const ingresosMesCombinado = aCombinadoARS(ingresosMesARS, ingresosMesUSD);
+  const gastosMesCombinado = aCombinadoARS(gastosMesARS, gastosMesUSD);
 
   const valorCarteraARS = dolarCCL
     ? inversionesValuadas.reduce(
@@ -50,11 +68,25 @@ export default async function ResumenPage() {
           Balance total
         </p>
         <p className="font-mono-num mt-2 text-3xl text-paper">
-          {formatMonto(balanceARS, "ARS")}
+          {formatMonto(balanceCombinadoARS, "ARS")}
         </p>
-        <p className="font-mono-num mt-1 text-sm text-mist">
-          {formatMonto(balanceUSD, "USD")}
-        </p>
+        {hayUSD && (
+          <div className="mt-1 flex flex-wrap items-center gap-3">
+            <span className="font-mono-num text-sm text-mist">
+              {formatMonto(balanceARS, "ARS")}{" "}
+              <span className="text-[10px] text-mist-dim">ARS</span>
+            </span>
+            <span className="font-mono-num text-sm text-mist">
+              {formatMonto(balanceUSD, "USD")}{" "}
+              <span className="text-[10px] text-mist-dim">USD</span>
+            </span>
+          </div>
+        )}
+        {hayUSD && !dolarMEP && (
+          <p className="mt-1 text-xs text-copper">
+            No se pudo cotizar el dólar MEP — el total no incluye el USD.
+          </p>
+        )}
         <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
           <div
             className="h-full bg-gradient-to-r from-sage to-gold"
@@ -63,7 +95,8 @@ export default async function ResumenPage() {
                 100,
                 Math.max(
                   8,
-                  (ingresosMesARS / Math.max(1, ingresosMesARS + gastosMesARS)) *
+                  (ingresosMesCombinado /
+                    Math.max(1, ingresosMesCombinado + gastosMesCombinado)) *
                     100
                 )
               )}%`,
@@ -77,14 +110,26 @@ export default async function ResumenPage() {
         <div className="rounded-xl border border-border bg-surface p-4">
           <p className="text-xs text-mist">Ingresos del mes</p>
           <p className="font-mono-num mt-1 text-lg text-sage">
-            {formatMonto(ingresosMesARS, "ARS")}
+            {formatMonto(ingresosMesCombinado, "ARS")}
           </p>
+          {ingresosMesUSD > 0 && (
+            <p className="font-mono-num mt-0.5 text-[11px] text-mist-dim">
+              {formatMonto(ingresosMesARS, "ARS")} ARS ·{" "}
+              {formatMonto(ingresosMesUSD, "USD")} USD
+            </p>
+          )}
         </div>
         <div className="rounded-xl border border-border bg-surface p-4">
           <p className="text-xs text-mist">Gastos del mes</p>
           <p className="font-mono-num mt-1 text-lg text-copper">
-            {formatMonto(gastosMesARS, "ARS")}
+            {formatMonto(gastosMesCombinado, "ARS")}
           </p>
+          {gastosMesUSD > 0 && (
+            <p className="font-mono-num mt-0.5 text-[11px] text-mist-dim">
+              {formatMonto(gastosMesARS, "ARS")} ARS ·{" "}
+              {formatMonto(gastosMesUSD, "USD")} USD
+            </p>
+          )}
         </div>
       </section>
 
@@ -111,7 +156,10 @@ export default async function ResumenPage() {
           <p className="mb-3 text-xs uppercase tracking-wide text-mist">
             Gastos por categoría
           </p>
-          <GastosPorCategoriaChart transacciones={transacciones} />
+          <GastosPorCategoriaChart
+            transacciones={transacciones}
+            dolarMEP={dolarMEP}
+          />
         </section>
       )}
     </div>
